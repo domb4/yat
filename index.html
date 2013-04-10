@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>endémique.org</title>
+		<meta charset="UTF-8">
+	</head>
+
+	<body>
+		<h1>Endemique</h1>
+
+		<article>
+			<header>
+				<h1>⡣ It's alive !</h1>
+			</header>
+
+			<p>
+				Hier j'ai voulu héberger mon site écrit pour Node.js mais ce ne fut pas sans problème.
+				Je souhaitais n'utiliser que le <a href="http://nodejs.org/api/http.html">module standard http</a> mais cela ne fonctionnait pas. Après un rapide aperçu du log sur Heroku, j'ai l'impression que l'on est obligé d'utiliser Express et son système de routage des url.
+				Après quelques déboires mon site est hébergé sur Heroku.
+
+				J'ai donc suivi la procédure dont je vous parlais dans mon article précédent. Mais il s'avère que j'ai fait cela ce soir sur un système Windows et tout n'est pas aussi simple.
+				Voici donc un petit récapitulatif des différentes tâches à effectuer pour héberger votre application Node.js sur Heroku.
+
+				<ol>
+					<li>
+						Télécharger puis installer les outils heroku toolbelt. Pour les plus pressés d'entres vous, les outils git déjà sont intégrés dans l'installeur heroku.
+					</li>
+					<li>
+						Créer un dossier qui contiendra tous les fichiers nécessaires au bon fonctionnemet de votre application.
+					</li>
+
+					<li>
+						Mettre à jour les dépendances de votre application avec la commande ci-dessous.
+						<pre>npm install</pre>
+					</li>
+
+					<li>
+						Sur Linux je n'ai pas eu ce problème cela s'était fait automatiqument. Mais là, sur Windows, j'ai dû générer une clé publique ssh que j'ai chargé sur Github et sur Heroku. Après coup, je ne sais pas si la clé est nécessaire sur Github, je vérifierai et corrigerai l'article au besoin.
+						Pour génerer la clé il suffit de saisir la commande ci-dessous.
+						<pre>ssh-keygen -t rsa -C "adresse@email.com" -f c:\users\username\.ssh\id_rsa</pre>
+						Pour charger la clé sur Github je ne saurais que trop vosu conseiller d'aller voir sur <a href="https://help.github.com/articles/generating-ssh-keys">l'aide de leur site</a>.
+						Quant à Heroku, la commande est la suivante, au passage <a href="http://stackoverflow.com/questions/4269922/permission-denied-publickey-when-deploying-heroku-code-fatal-the-remote-end">merci à Stackoverflow</a>.
+						<pre>heroku keys:add c:\users\username\.ssh\id_rsa</pre>
+						N'oubliez pas de vous logger avec vos identifiants sur heroku avec la commande suivante:
+						<pre>heroku login</pre>
+					</li>
+				</ol>
+
+				Vous n'avez désormais plus qu'a suivre la procédure décrite dans l'aide sur heroku.com.
+
+				J'oubliais, si vous testez l'application à l'aide de la commande <pre>heroku open</pre>vous risquez de rencontrer quelques messsages d'erreur. Pour résoudre le problème, il suffit de <a href="http://stackoverflow.com/questions/15399637/cant-start-foreman-in-heroku-tutorial-using-python">rétrograder la version d'un gem Ruby</a>. Pensez à démarrer l'invite de commande en tant qu'administrateur.
+
+				C'est tout pour ce soir, prochaine étape rendre mon site un peu plus agréable à lire.
+			</p>
+
+			<footer>
+				<time datetime="20130410" pubdate>mercredi 10 avril 2013</time>
+				<br />
+				=======
+			</footer>
+		</article>
+
+		<article>
+			<header>
+				<h1>⡣ Un peu de technique, hébergement de mon site</h1>
+			</header>
+
+			<p>
+				<h2>⡢ Introduction</h2>
+					Mon site est actuellement hébergé sur Google Drive. Un simple fichier index.html dans un dossier public, une petite redirection de mon nom de domaine vers le service en question et vous voila sur mon petit journal.
+					C'est fonctionnel mais cela est plutôt archaïque, je vais donc vous présentez comment mettre en ligne votre site les nuages.
+
+					Pour héberger mon application web, j'ai opté pour une plate-forme en tant que service ou PaaS (Platform as a Service) à savoir Heroku. Il s'agit d'un service qui va exposer vos pages web sans avoir à configurer et à maintenir un serveur ainsi que le serveur http inhérant. 
+					Pour exposer ma page html, j'utiliserai Node.js un framework très connu qui permet de développer des applications réseau à l'aide du langage Javascript (merci Wikipedia).
+					Dans notre cas l'application réseau sera un serveur http qui permettra d'envoyer ma page html à chaque requête faite ce dernier.
+
+
+				<h2>⡢ Configuration</h2>
+					<h3>⡠ Prérequis</h3>
+					Avant de commencer il vous faudra créer un compte sur Github, un service web qui vous permettra de gérer et de versionner les applications que vous développez.
+					Et il faudra bien sûr un compte sur Heroku.
+					Ces deux services proposent des formules gratuites avec des prestations limitées mais suffisantes pour le développer et exposer une page web.
+
+					<h3>⡠ Configuration</h3>
+					Je n'aurai pas le temps de détailler aujourd'hui la marcha à suivre, mais cela tient en quelques étapes.
+					<ol>
+						<li>Installer Node.js sur votre système d'exploitation</li>
+						<li>
+							Créer deux fichiers, un fichier index.html avec le contenu à afficher aux visiteurs et un fichier web.js avec le contenu ci-dessous.
+							<br />
+							<code>
+								var http = require('http');
+								var fs = require('fs');
+
+								var index = fs.readFileSync('index.html', 'utf8');
+
+								http.createServer(function (request, response) {
+									response.writeHead(200, { 'Content-Type': 'text/html'});
+									response.end(index);
+									return;
+								}).listen(5000);
+							</code>
+						</li>
+						<li>Suivre <a href="https://devcenter.heroku.com/articles/nodejs">la procéure de configuration de Node.js</a> sur le site d'Heroku.</li>
+					</ol>
+
+					<h3>⡠ Conclusion</h3>
+					Après quelques difficultés que je détaillerai demain, mon site est totalement fonctionnel.
+					Heu en fait il n'est pas encore fonctionnel sur Heroku. Il doit y a un petit problème. Du coup, petit upload sur Google Drive en attendant de trouver une solution.
+			</p>
+
+			<footer>
+				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
+				<br />
+				=======
+			</footer>
+		</article>
+
+		<article>
+			<header>
+				<h1>⡣ Mise en ligne de mon site</h1>
+			</header>
+
+			<p>
+				Voilà, mon site est en ligne. Il est dépouillé, il n'est pas très joli et y a quelques coquilles mais c'est un début.
+				Et à dire vrai c'est un peu l'idée. Non pas de faire un site inélégant mais de vous le présenter tel qu'il est à chaque étape de son évolution. J'ai aussi l'intention de conserver un historique de toutes les phases qui m'auront mené à ce qu'est devenu mon site.
+				Je n'ai pas d'idée précise sur les artifices que je vais employer, mais à chaque mise en oeuvre d'une nouvelle technique je vous en ferait part dans un article mon journal.
+			</p>
+
+			<footer>
+				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
+				<br />
+				=======
+			</footer>
+		</article>
+
+		<article>
+			<header>
+				<h1>⡣ Article premier</h1>
+			</header>
+
+			<p>
+				Bonjour et bienvenue sur mon journal.
+
+				Il y a bien longtemps que je souhaitais me lancer dans l'aventure de la fabrication et de l'alimentation d'un site internet. 
+				J'ai toujours eu envie de partager mes découvertes et mes connaissances sur les sujets qui m'intéressent mais à mon grand dam, la procrastination a toujours bien fait son œuvre.
+
+				Mais aujourd'hui, en ce 8 avril 2013, c'est décidé, je me lance.
+
+				Mes motivations premières sont de pouvoir partager avec les autres sur des sujets qui m'intéressent voire me passionnent, et de m'enrichir que ce soit au niveau de mes compétences ou sur le plan personnel.
+
+				Ce journal sera orienté vers les technologies Web mais je ne me restreindrai pas à parler de tout autre sujet.
+
+				Je constate qu'il se fait tard et que je dois mettre mon site en ligne avant minuit si je ne veux pas me faire mentir.
+				Je vais donc rédiger mon premier billet, à savoir la mise en ligne de mon site.
+
+				Yann
+			</p>
+
+			<footer>
+				<time datetime="20130409" pubdate>lundi 8 avril 2013</time>
+				<br />
+				========
+			</footer>
+		</article>
+
+	</body>
+</html>
