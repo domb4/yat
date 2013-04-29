@@ -7,10 +7,121 @@
 
 	<body>
 		<h1>Endemique</h1>
+		<address>
+			<a href="mailto:admin88@endemique.org">contact</a>
+		</address>
+		<article>
+			<header>
+				<h1>⡣ Gérer et partager son code avec Git</h1>
+				<time datetime="20130429" pubdate>lundi 29 avril 2013</time>
+			</header>
+		</article>
+
+		<p>
+			Afin de gérer le code source de de mon site, je me suis initié à un système de gestion de version baptisé Git. Couplé à Github, un service d'hébergement de dépôts Git collaboratif, je pourrai partager mon code mais aussi y accéder depuis n'importe quel endroit afin de pouvoir le modifier.
+			Voici en quelques étapes le procédé que j'utilise pour gérer les versions de mon site et pour le synchroniser sur Github et sur Heroku.
+
+			<ol>
+				<li>
+					Prérequis.
+					<p>
+						[clé de cryptage]
+					</p>
+				</li>
+
+				<li>
+					Création d'un dossier qui va contenir le projet. Et initialisation du dépôt dans ce répertoire.
+					<p>
+						L'initialisation du dépôt consiste en la création d'un répertoire caché .git dans le dossier. C'est en s'appuyant sur ce dossier que Git va pouvoir prendre en compte toutes les modifications, les suppressions et les ajouts de fichiers qui auront été faits dans le dossier de votre projet.
+						<pre><code># mkdir dossier_contenant_le_projet
+# cd dossier_contenant_le_projet
+# git init
+</code></pre>			
+					</p>
+				</li>
+
+				<li>
+					Personnalisation de la configuration à l'aide de l'option config.
+					<p>
+						Ces deux premières commandes permettent de configurer le nom d'utilisateur et l'adresse email utilisés dans Github.
+						L'option --global activée permet de paramétrer les options pour tous les dépôts crées sur l'ordinateur. A défaut le paramétrage se fera pour le dépôt en cours ou plus précisément celui situé dans le répertoire actif.
+<pre><code># git config [--global] user.name "john"
+# git config [--global] user.email "john@doe.com"
+</code></pre>
+					</p>
+
+					<p>
+						L'option core.excludefiles permet de spécifier un fichier texte dans lequel nous pourrons ajouter des fichiers ou répertoires qui seront tout simplement ignorés par Git.
+						Cette option est très utile elle permettra d'exclure les fichiers liés à la compilation par exemple ou encore les modules utilisés pas Node.js nécessaire au bon fonctionnement de l'application.
+
+<pre><code># git config core.excludesfile ~/.gitignore
+</pre></code>
+
+						Toutes les modification opérées à l'aide de la commande git config sont répercutées clairement dans le fichier ~/.git/gitconfig ou dans le fichier local au projet ~/projet/.git/config
+					</p>
+
+					<p>
+						Note: les phases précédentes ne sont généralement a effectuer qu'à la création d'un nouveau projet. Mais il est bien entendu possible de paramétrer de nouveau et à tout moment le dépôt avec la commande git config
+						Un fois le dépôt créé et paramétré, on utilisera les étapes suivantes pour mettre à jour son dépôt.
+					</p>
+				</li>
+
+				<li>
+					Création et modification du code source.
+					<p>
+						Un dépôt est caractérisé par un index (localisé dans le dossier .git).
+						Cet index sera en quelque sorte la mémoire et la conscience de votre projet.
+						Mémoire, car chaque projet sera jalonné par des clichés qui refléteront la structure exact de votre projet à un instant t. Chaque cliché correspond en fait à une version du projet.
+						Conscience, car Git est capable de détecter la moindre modification qui aura eu lieu dans la structure de votre projet et ceci depuis le dernier cliché actif.
+						Concrètement, ces deux caractéristiques permettent de gérer votre code source selon un cycle simple:
+						<br />
+						<i>
+						     Modifier votre code source -> Tester votre code source modifié -> Valider vos modifications en prenant un cliché -> Modifier votre code source -> etc...
+						</i>
+					</p>
+
+					<p>
+						Et voici trois commandes qui traduisent ce flux de travail.
+
+						Pour ajouter des fichiers a votre projet il faut utiliser git add, par exemple, la commande ci dessous permet d'ajouter tous les fichiers au projet.
+						<pre><code># git add .</pre></code>
+						Et cette commande permet d'ajouter un fichier en particulier.
+						<pre><code># git add foo.js</pre></code>
+
+						Pour supprimer des fichiers nous disposons de la commande git rm.
+						<pre><code># git rm foo.js</pre></code>
+
+						Enfin l'option commit permet de valider votre la structure de votre projet en créant une nouvelle version.
+						<pre><code># git commit -m "commentaire"</pre></code>
+					</p>
+				</li>
+
+				<li>
+					Synchroniser un dépôt local et un dépôt distant.
+					<p>
+						Avant tout il est nécessaire de préciser à Git le ou les dépôts distants que vous souhaitez utiliser pour synchroniser avec votre dépôt local.
+						<pre><code># git remote add origin git@github.com:john/nomdemondepot.git</pre></code>
+
+						L'option push permet de répercuter les modifications faites en local sur votre dépôt distant.
+						<pre><code># git push -u origin master</pre></code>
+					</p>
+				</li>
+			</ol>
+
+			Voila donc les quelques commandes que j'utilise pour maintenir mon code source à disposition. Il me reste encore à préciser deux ou trois petites choses mais je suis plutôt impatient de mettre cet article en ligne. Je ferai une petite révision du présent article prochainement.
+			J'ai ajouté une adresse électronique de contact, n'hésitez pas à me solliciter pour toute critique ou suggestion.
+
+			Edit: après réflexion, je crois que la prochaine révision consistera à améliorer la visibilité du site avec une petite feuille CSS. C'est vrai que ça ne donne pas vraiment envie de lire.
+		</p>
+
+		<footer>
+			=======
+		</footer>
 
 		<article>
 			<header>
 				<h1>⡣ It's alive !</h1>
+				<time datetime="20130410" pubdate>mercredi 10 avril 2013</time>
 			</header>
 
 			<p>
@@ -54,8 +165,6 @@
 			</p>
 
 			<footer>
-				<time datetime="20130410" pubdate>mercredi 10 avril 2013</time>
-				<br />
 				=======
 			</footer>
 		</article>
@@ -63,6 +172,7 @@
 		<article>
 			<header>
 				<h1>⡣ Un peu de technique, hébergement de mon site</h1>
+				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
 			</header>
 
 			<p>
@@ -110,8 +220,6 @@
 			</p>
 
 			<footer>
-				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
-				<br />
 				=======
 			</footer>
 		</article>
@@ -119,6 +227,7 @@
 		<article>
 			<header>
 				<h1>⡣ Mise en ligne de mon site</h1>
+				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
 			</header>
 
 			<p>
@@ -128,8 +237,6 @@
 			</p>
 
 			<footer>
-				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
-				<br />
 				=======
 			</footer>
 		</article>
@@ -137,6 +244,7 @@
 		<article>
 			<header>
 				<h1>⡣ Article premier</h1>
+				<time datetime="20130409" pubdate>lundi 8 avril 2013</time>
 			</header>
 
 			<p>
@@ -158,8 +266,6 @@
 			</p>
 
 			<footer>
-				<time datetime="20130409" pubdate>lundi 8 avril 2013</time>
-				<br />
 				========
 			</footer>
 		</article>
