@@ -3,272 +3,277 @@
 	<head>
 		<title>endémique.org</title>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/style.css">
 	</head>
 
-	<body>
+	<body>		
 		<h1>Endemique</h1>
 		<address>
 			<a href="mailto:admin88@endemique.org">contact</a>
 		</address>
-		<article>
-			<header>
-				<h1>⡣ Gérer et partager son code avec Git</h1>
-				<time datetime="20130429" pubdate>lundi 29 avril 2013</time>
-			</header>
-		</article>
+		<div id="wrapper">
+			<section id="principal">
+				<article>
+					<header>
+						<h1>⡣ Gérer et partager son code avec Git</h1>
+						<time datetime="20130429" pubdate>lundi 29 avril 2013</time>
+					</header>
+				</article>
 
-		<p>
-			Afin de gérer le code source de de mon site, je me suis initié à un système de gestion de version baptisé Git. Couplé à Github, un service d'hébergement de dépôts Git collaboratif, je pourrai partager mon code mais aussi y accéder depuis n'importe quel endroit afin de pouvoir le modifier.
-			Voici en quelques étapes le procédé que j'utilise pour gérer les versions de mon site et pour le synchroniser sur Github et sur Heroku.
+				<p>
+					Afin de gérer le code source de de mon site, je me suis initié à un système de gestion de version baptisé Git. Couplé à Github, un service d'hébergement de dépôts Git collaboratif, je pourrai partager mon code mais aussi y accéder depuis n'importe quel endroit afin de pouvoir le modifier.
+					Voici en quelques étapes le procédé que j'utilise pour gérer les versions de mon site et pour le synchroniser sur Github et sur Heroku.
 
-			<ol>
-				<li>
-					Prérequis.
-					<p>
-						[clé de cryptage]
-					</p>
-				</li>
-
-				<li>
-					Création d'un dossier qui va contenir le projet. Et initialisation du dépôt dans ce répertoire.
-					<p>
-						L'initialisation du dépôt consiste en la création d'un répertoire caché .git dans le dossier. C'est en s'appuyant sur ce dossier que Git va pouvoir prendre en compte toutes les modifications, les suppressions et les ajouts de fichiers qui auront été faits dans le dossier de votre projet.
-						<pre><code># mkdir dossier_contenant_le_projet
-# cd dossier_contenant_le_projet
-# git init
-</code></pre>			
-					</p>
-				</li>
-
-				<li>
-					Personnalisation de la configuration à l'aide de l'option config.
-					<p>
-						Ces deux premières commandes permettent de configurer le nom d'utilisateur et l'adresse email utilisés dans Github.
-						L'option --global activée permet de paramétrer les options pour tous les dépôts crées sur l'ordinateur. A défaut le paramétrage se fera pour le dépôt en cours ou plus précisément celui situé dans le répertoire actif.
-<pre><code># git config [--global] user.name "john"
-# git config [--global] user.email "john@doe.com"
-</code></pre>
-					</p>
-
-					<p>
-						L'option core.excludefiles permet de spécifier un fichier texte dans lequel nous pourrons ajouter des fichiers ou répertoires qui seront tout simplement ignorés par Git.
-						Cette option est très utile elle permettra d'exclure les fichiers liés à la compilation par exemple ou encore les modules utilisés pas Node.js nécessaire au bon fonctionnement de l'application.
-
-<pre><code># git config core.excludesfile ~/.gitignore
-</pre></code>
-
-						Toutes les modification opérées à l'aide de la commande git config sont répercutées clairement dans le fichier ~/.git/gitconfig ou dans le fichier local au projet ~/projet/.git/config
-					</p>
-
-					<p>
-						Note: les phases précédentes ne sont généralement a effectuer qu'à la création d'un nouveau projet. Mais il est bien entendu possible de paramétrer de nouveau et à tout moment le dépôt avec la commande git config
-						Un fois le dépôt créé et paramétré, on utilisera les étapes suivantes pour mettre à jour son dépôt.
-					</p>
-				</li>
-
-				<li>
-					Création et modification du code source.
-					<p>
-						Un dépôt est caractérisé par un index (localisé dans le dossier .git).
-						Cet index sera en quelque sorte la mémoire et la conscience de votre projet.
-						Mémoire, car chaque projet sera jalonné par des clichés qui refléteront la structure exact de votre projet à un instant t. Chaque cliché correspond en fait à une version du projet.
-						Conscience, car Git est capable de détecter la moindre modification qui aura eu lieu dans la structure de votre projet et ceci depuis le dernier cliché actif.
-						Concrètement, ces deux caractéristiques permettent de gérer votre code source selon un cycle simple:
-						<br />
-						<i>
-						     Modifier votre code source -> Tester votre code source modifié -> Valider vos modifications en prenant un cliché -> Modifier votre code source -> etc...
-						</i>
-					</p>
-
-					<p>
-						Et voici trois commandes qui traduisent ce flux de travail.
-
-						Pour ajouter des fichiers a votre projet il faut utiliser git add, par exemple, la commande ci dessous permet d'ajouter tous les fichiers au projet.
-						<pre><code># git add .</pre></code>
-						Et cette commande permet d'ajouter un fichier en particulier.
-						<pre><code># git add foo.js</pre></code>
-
-						Pour supprimer des fichiers nous disposons de la commande git rm.
-						<pre><code># git rm foo.js</pre></code>
-
-						Enfin l'option commit permet de valider votre la structure de votre projet en créant une nouvelle version.
-						<pre><code># git commit -m "commentaire"</pre></code>
-					</p>
-				</li>
-
-				<li>
-					Synchroniser un dépôt local et un dépôt distant.
-					<p>
-						Avant tout il est nécessaire de préciser à Git le ou les dépôts distants que vous souhaitez utiliser pour synchroniser avec votre dépôt local.
-						<pre><code># git remote add origin git@github.com:john/nomdemondepot.git</pre></code>
-
-						L'option push permet de répercuter les modifications faites en local sur votre dépôt distant.
-						<pre><code># git push -u origin master</pre></code>
-					</p>
-				</li>
-			</ol>
-
-			Voila donc les quelques commandes que j'utilise pour maintenir mon code source à disposition. Il me reste encore à préciser deux ou trois petites choses mais je suis plutôt impatient de mettre cet article en ligne. Je ferai une petite révision du présent article prochainement.
-			J'ai ajouté une adresse électronique de contact, n'hésitez pas à me solliciter pour toute critique ou suggestion.
-
-			Edit: après réflexion, je crois que la prochaine révision consistera à améliorer la visibilité du site avec une petite feuille CSS. C'est vrai que ça ne donne pas vraiment envie de lire.
-		</p>
-
-		<footer>
-			=======
-		</footer>
-
-		<article>
-			<header>
-				<h1>⡣ It's alive !</h1>
-				<time datetime="20130410" pubdate>mercredi 10 avril 2013</time>
-			</header>
-
-			<p>
-				Hier j'ai voulu héberger mon site écrit pour Node.js mais ce ne fut pas sans problème.
-				Je souhaitais n'utiliser que le <a href="http://nodejs.org/api/http.html">module standard http</a> mais cela ne fonctionnait pas. Après un rapide aperçu du log sur Heroku, j'ai l'impression que l'on est obligé d'utiliser Express et son système de routage des url.
-				Après quelques déboires mon site est hébergé sur Heroku.
-
-				J'ai donc suivi la procédure dont je vous parlais dans mon article précédent. Mais il s'avère que j'ai fait cela ce soir sur un système Windows et tout n'est pas aussi simple.
-				Voici donc un petit récapitulatif des différentes tâches à effectuer pour héberger votre application Node.js sur Heroku.
-
-				<ol>
-					<li>
-						Télécharger puis installer les outils heroku toolbelt. Pour les plus pressés d'entres vous, les outils git déjà sont intégrés dans l'installeur heroku.
-					</li>
-					<li>
-						Créer un dossier qui contiendra tous les fichiers nécessaires au bon fonctionnemet de votre application.
-					</li>
-
-					<li>
-						Mettre à jour les dépendances de votre application avec la commande ci-dessous.
-						<pre>npm install</pre>
-					</li>
-
-					<li>
-						Sur Linux je n'ai pas eu ce problème cela s'était fait automatiqument. Mais là, sur Windows, j'ai dû générer une clé publique ssh que j'ai chargé sur Github et sur Heroku. Après coup, je ne sais pas si la clé est nécessaire sur Github, je vérifierai et corrigerai l'article au besoin.
-						Pour génerer la clé il suffit de saisir la commande ci-dessous.
-						<pre>ssh-keygen -t rsa -C "adresse@email.com" -f c:\users\username\.ssh\id_rsa</pre>
-						Pour charger la clé sur Github je ne saurais que trop vosu conseiller d'aller voir sur <a href="https://help.github.com/articles/generating-ssh-keys">l'aide de leur site</a>.
-						Quant à Heroku, la commande est la suivante, au passage <a href="http://stackoverflow.com/questions/4269922/permission-denied-publickey-when-deploying-heroku-code-fatal-the-remote-end">merci à Stackoverflow</a>.
-						<pre>heroku keys:add c:\users\username\.ssh\id_rsa</pre>
-						N'oubliez pas de vous logger avec vos identifiants sur heroku avec la commande suivante:
-						<pre>heroku login</pre>
-					</li>
-				</ol>
-
-				Vous n'avez désormais plus qu'a suivre la procédure décrite dans l'aide sur heroku.com.
-
-				J'oubliais, si vous testez l'application à l'aide de la commande <pre>heroku open</pre>vous risquez de rencontrer quelques messsages d'erreur. Pour résoudre le problème, il suffit de <a href="http://stackoverflow.com/questions/15399637/cant-start-foreman-in-heroku-tutorial-using-python">rétrograder la version d'un gem Ruby</a>. Pensez à démarrer l'invite de commande en tant qu'administrateur.
-
-				C'est tout pour ce soir, prochaine étape rendre mon site un peu plus agréable à lire.
-			</p>
-
-			<footer>
-				=======
-			</footer>
-		</article>
-
-		<article>
-			<header>
-				<h1>⡣ Un peu de technique, hébergement de mon site</h1>
-				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
-			</header>
-
-			<p>
-				<h2>⡢ Introduction</h2>
-					Mon site est actuellement hébergé sur Google Drive. Un simple fichier index.html dans un dossier public, une petite redirection de mon nom de domaine vers le service en question et vous voila sur mon petit journal.
-					C'est fonctionnel mais cela est plutôt archaïque, je vais donc vous présentez comment mettre en ligne votre site les nuages.
-
-					Pour héberger mon application web, j'ai opté pour une plate-forme en tant que service ou PaaS (Platform as a Service) à savoir Heroku. Il s'agit d'un service qui va exposer vos pages web sans avoir à configurer et à maintenir un serveur ainsi que le serveur http inhérant. 
-					Pour exposer ma page html, j'utiliserai Node.js un framework très connu qui permet de développer des applications réseau à l'aide du langage Javascript (merci Wikipedia).
-					Dans notre cas l'application réseau sera un serveur http qui permettra d'envoyer ma page html à chaque requête faite ce dernier.
-
-
-				<h2>⡢ Configuration</h2>
-					<h3>⡠ Prérequis</h3>
-					Avant de commencer il vous faudra créer un compte sur Github, un service web qui vous permettra de gérer et de versionner les applications que vous développez.
-					Et il faudra bien sûr un compte sur Heroku.
-					Ces deux services proposent des formules gratuites avec des prestations limitées mais suffisantes pour le développer et exposer une page web.
-
-					<h3>⡠ Configuration</h3>
-					Je n'aurai pas le temps de détailler aujourd'hui la marcha à suivre, mais cela tient en quelques étapes.
 					<ol>
-						<li>Installer Node.js sur votre système d'exploitation</li>
 						<li>
-							Créer deux fichiers, un fichier index.html avec le contenu à afficher aux visiteurs et un fichier web.js avec le contenu ci-dessous.
-							<br />
-							<code>
-								var http = require('http');
-								var fs = require('fs');
-
-								var index = fs.readFileSync('index.html', 'utf8');
-
-								http.createServer(function (request, response) {
-									response.writeHead(200, { 'Content-Type': 'text/html'});
-									response.end(index);
-									return;
-								}).listen(5000);
-							</code>
+							Prérequis.
+							<p>
+								[clé de cryptage]
+							</p>
 						</li>
-						<li>Suivre <a href="https://devcenter.heroku.com/articles/nodejs">la procéure de configuration de Node.js</a> sur le site d'Heroku.</li>
+
+						<li>
+							Création d'un dossier qui va contenir le projet. Et initialisation du dépôt dans ce répertoire.
+							<p>
+								L'initialisation du dépôt consiste en la création d'un répertoire caché .git dans le dossier. C'est en s'appuyant sur ce dossier que Git va pouvoir prendre en compte toutes les modifications, les suppressions et les ajouts de fichiers qui auront été faits dans le dossier de votre projet.
+		<pre><code># mkdir dossier_contenant_le_projet
+		# cd dossier_contenant_le_projet
+		# git init
+		</code></pre>			
+							</p>
+						</li>
+
+						<li>
+							Personnalisation de la configuration à l'aide de l'option config.
+							<p>
+								Ces deux premières commandes permettent de configurer le nom d'utilisateur et l'adresse email utilisés dans Github.
+								L'option --global activée permet de paramétrer les options pour tous les dépôts crées sur l'ordinateur. A défaut le paramétrage se fera pour le dépôt en cours ou plus précisément celui situé dans le répertoire actif.
+		<pre><code># git config [--global] user.name "john"
+		# git config [--global] user.email "john@doe.com"
+		</code></pre>
+							</p>
+
+							<p>
+								L'option core.excludefiles permet de spécifier un fichier texte dans lequel nous pourrons ajouter des fichiers ou répertoires qui seront tout simplement ignorés par Git.
+								Cette option est très utile elle permettra d'exclure les fichiers liés à la compilation par exemple ou encore les modules utilisés pas Node.js nécessaire au bon fonctionnement de l'application.
+
+		<pre><code># git config core.excludesfile ~/.gitignore
+		</pre></code>
+
+								Toutes les modification opérées à l'aide de la commande git config sont répercutées clairement dans le fichier ~/.git/gitconfig ou dans le fichier local au projet ~/projet/.git/config
+							</p>
+
+							<p>
+								Note: les phases précédentes ne sont généralement a effectuer qu'à la création d'un nouveau projet. Mais il est bien entendu possible de paramétrer de nouveau et à tout moment le dépôt avec la commande git config
+								Un fois le dépôt créé et paramétré, on utilisera les étapes suivantes pour mettre à jour son dépôt.
+							</p>
+						</li>
+
+						<li>
+							Création et modification du code source.
+							<p>
+								Un dépôt est caractérisé par un index (localisé dans le dossier .git).
+								Cet index sera en quelque sorte la mémoire et la conscience de votre projet.
+								Mémoire, car chaque projet sera jalonné par des clichés qui refléteront la structure exact de votre projet à un instant t. Chaque cliché correspond en fait à une version du projet.
+								Conscience, car Git est capable de détecter la moindre modification qui aura eu lieu dans la structure de votre projet et ceci depuis le dernier cliché actif.
+								Concrètement, ces deux caractéristiques permettent de gérer votre code source selon un cycle simple:
+								<br />
+								<i>
+								     Modifier votre code source -> Tester votre code source modifié -> Valider vos modifications en prenant un cliché -> Modifier votre code source -> etc...
+								</i>
+							</p>
+
+							<p>
+								Et voici trois commandes qui traduisent ce flux de travail.
+
+								Pour ajouter des fichiers a votre projet il faut utiliser git add, par exemple, la commande ci dessous permet d'ajouter tous les fichiers au projet.
+								<pre><code># git add .</pre></code>
+								Et cette commande permet d'ajouter un fichier en particulier.
+								<pre><code># git add foo.js</pre></code>
+
+								Pour supprimer des fichiers nous disposons de la commande git rm.
+								<pre><code># git rm foo.js</pre></code>
+
+								Enfin l'option commit permet de valider votre la structure de votre projet en créant une nouvelle version.
+								<pre><code># git commit -m "commentaire"</pre></code>
+							</p>
+						</li>
+
+						<li>
+							Synchroniser un dépôt local et un dépôt distant.
+							<p>
+								Avant tout il est nécessaire de préciser à Git le ou les dépôts distants que vous souhaitez utiliser pour synchroniser avec votre dépôt local.
+								<pre><code># git remote add origin git@github.com:john/nomdemondepot.git</pre></code>
+
+								L'option push permet de répercuter les modifications faites en local sur votre dépôt distant.
+								<pre><code># git push -u origin master</pre></code>
+							</p>
+						</li>
 					</ol>
 
-					<h3>⡠ Conclusion</h3>
-					Après quelques difficultés que je détaillerai demain, mon site est totalement fonctionnel.
-					Heu en fait il n'est pas encore fonctionnel sur Heroku. Il doit y a un petit problème. Du coup, petit upload sur Google Drive en attendant de trouver une solution.
-			</p>
+					Voila donc les quelques commandes que j'utilise pour maintenir mon code source à disposition. Il me reste encore à préciser deux ou trois petites choses mais je suis plutôt impatient de mettre cet article en ligne. Je ferai une petite révision du présent article prochainement.
+					J'ai ajouté une adresse électronique de contact, n'hésitez pas à me solliciter pour toute critique ou suggestion.
 
-			<footer>
-				=======
-			</footer>
-		</article>
+					Edit: après réflexion, je crois que la prochaine révision consistera à améliorer la visibilité du site avec une petite feuille CSS. C'est vrai que ça ne donne pas vraiment envie de lire.
+				</p>
 
-		<article>
-			<header>
-				<h1>⡣ Mise en ligne de mon site</h1>
-				<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
-			</header>
+				<footer>
+					=======
+				</footer>
 
-			<p>
-				Voilà, mon site est en ligne. Il est dépouillé, il n'est pas très joli et y a quelques coquilles mais c'est un début.
-				Et à dire vrai c'est un peu l'idée. Non pas de faire un site inélégant mais de vous le présenter tel qu'il est à chaque étape de son évolution. J'ai aussi l'intention de conserver un historique de toutes les phases qui m'auront mené à ce qu'est devenu mon site.
-				Je n'ai pas d'idée précise sur les artifices que je vais employer, mais à chaque mise en oeuvre d'une nouvelle technique je vous en ferait part dans un article mon journal.
-			</p>
+				<article>
+					<header>
+						<h1>⡣ It's alive !</h1>
+						<time datetime="20130410" pubdate>mercredi 10 avril 2013</time>
+					</header>
 
-			<footer>
-				=======
-			</footer>
-		</article>
+					<p>
+						Hier j'ai voulu héberger mon site écrit pour Node.js mais ce ne fut pas sans problème.
+						Je souhaitais n'utiliser que le <a href="http://nodejs.org/api/http.html">module standard http</a> mais cela ne fonctionnait pas. Après un rapide aperçu du log sur Heroku, j'ai l'impression que l'on est obligé d'utiliser Express et son système de routage des url.
+						Après quelques déboires mon site est hébergé sur Heroku.
 
-		<article>
-			<header>
-				<h1>⡣ Article premier</h1>
-				<time datetime="20130409" pubdate>lundi 8 avril 2013</time>
-			</header>
+						J'ai donc suivi la procédure dont je vous parlais dans mon article précédent. Mais il s'avère que j'ai fait cela ce soir sur un système Windows et tout n'est pas aussi simple.
+						Voici donc un petit récapitulatif des différentes tâches à effectuer pour héberger votre application Node.js sur Heroku.
 
-			<p>
-				Bonjour et bienvenue sur mon journal.
+						<ol>
+							<li>
+								Télécharger puis installer les outils heroku toolbelt. Pour les plus pressés d'entres vous, les outils git déjà sont intégrés dans l'installeur heroku.
+							</li>
+							<li>
+								Créer un dossier qui contiendra tous les fichiers nécessaires au bon fonctionnemet de votre application.
+							</li>
 
-				Il y a bien longtemps que je souhaitais me lancer dans l'aventure de la fabrication et de l'alimentation d'un site internet. 
-				J'ai toujours eu envie de partager mes découvertes et mes connaissances sur les sujets qui m'intéressent mais à mon grand dam, la procrastination a toujours bien fait son œuvre.
+							<li>
+								Mettre à jour les dépendances de votre application avec la commande ci-dessous.
+								<pre>npm install</pre>
+							</li>
 
-				Mais aujourd'hui, en ce 8 avril 2013, c'est décidé, je me lance.
+							<li>
+								Sur Linux je n'ai pas eu ce problème cela s'était fait automatiqument. Mais là, sur Windows, j'ai dû générer une clé publique ssh que j'ai chargé sur Github et sur Heroku. Après coup, je ne sais pas si la clé est nécessaire sur Github, je vérifierai et corrigerai l'article au besoin.
+								Pour génerer la clé il suffit de saisir la commande ci-dessous.
+								<pre>ssh-keygen -t rsa -C "adresse@email.com" -f c:\users\username\.ssh\id_rsa</pre>
+								Pour charger la clé sur Github je ne saurais que trop vosu conseiller d'aller voir sur <a href="https://help.github.com/articles/generating-ssh-keys">l'aide de leur site</a>.
+								Quant à Heroku, la commande est la suivante, au passage <a href="http://stackoverflow.com/questions/4269922/permission-denied-publickey-when-deploying-heroku-code-fatal-the-remote-end">merci à Stackoverflow</a>.
+								<pre>heroku keys:add c:\users\username\.ssh\id_rsa</pre>
+								N'oubliez pas de vous logger avec vos identifiants sur heroku avec la commande suivante:
+								<pre>heroku login</pre>
+							</li>
+						</ol>
 
-				Mes motivations premières sont de pouvoir partager avec les autres sur des sujets qui m'intéressent voire me passionnent, et de m'enrichir que ce soit au niveau de mes compétences ou sur le plan personnel.
+						Vous n'avez désormais plus qu'a suivre la procédure décrite dans l'aide sur heroku.com.
 
-				Ce journal sera orienté vers les technologies Web mais je ne me restreindrai pas à parler de tout autre sujet.
+						J'oubliais, si vous testez l'application à l'aide de la commande <pre>heroku open</pre>vous risquez de rencontrer quelques messsages d'erreur. Pour résoudre le problème, il suffit de <a href="http://stackoverflow.com/questions/15399637/cant-start-foreman-in-heroku-tutorial-using-python">rétrograder la version d'un gem Ruby</a>. Pensez à démarrer l'invite de commande en tant qu'administrateur.
 
-				Je constate qu'il se fait tard et que je dois mettre mon site en ligne avant minuit si je ne veux pas me faire mentir.
-				Je vais donc rédiger mon premier billet, à savoir la mise en ligne de mon site.
+						C'est tout pour ce soir, prochaine étape rendre mon site un peu plus agréable à lire.
+					</p>
 
-				Yann
-			</p>
+					<footer>
+						=======
+					</footer>
+				</article>
 
-			<footer>
-				========
-			</footer>
-		</article>
+				<article>
+					<header>
+						<h1>⡣ Un peu de technique, hébergement de mon site</h1>
+						<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
+					</header>
 
+					<p>
+						<h2>⡢ Introduction</h2>
+							Mon site est actuellement hébergé sur Google Drive. Un simple fichier index.html dans un dossier public, une petite redirection de mon nom de domaine vers le service en question et vous voila sur mon petit journal.
+							C'est fonctionnel mais cela est plutôt archaïque, je vais donc vous présentez comment mettre en ligne votre site les nuages.
+
+							Pour héberger mon application web, j'ai opté pour une plate-forme en tant que service ou PaaS (Platform as a Service) à savoir Heroku. Il s'agit d'un service qui va exposer vos pages web sans avoir à configurer et à maintenir un serveur ainsi que le serveur http inhérant. 
+							Pour exposer ma page html, j'utiliserai Node.js un framework très connu qui permet de développer des applications réseau à l'aide du langage Javascript (merci Wikipedia).
+							Dans notre cas l'application réseau sera un serveur http qui permettra d'envoyer ma page html à chaque requête faite ce dernier.
+
+
+						<h2>⡢ Configuration</h2>
+							<h3>⡠ Prérequis</h3>
+							Avant de commencer il vous faudra créer un compte sur Github, un service web qui vous permettra de gérer et de versionner les applications que vous développez.
+							Et il faudra bien sûr un compte sur Heroku.
+							Ces deux services proposent des formules gratuites avec des prestations limitées mais suffisantes pour le développer et exposer une page web.
+
+							<h3>⡠ Configuration</h3>
+							Je n'aurai pas le temps de détailler aujourd'hui la marcha à suivre, mais cela tient en quelques étapes.
+							<ol>
+								<li>Installer Node.js sur votre système d'exploitation</li>
+								<li>
+									Créer deux fichiers, un fichier index.html avec le contenu à afficher aux visiteurs et un fichier web.js avec le contenu ci-dessous.
+									<br />
+									<code>
+										var http = require('http');
+										var fs = require('fs');
+
+										var index = fs.readFileSync('index.html', 'utf8');
+
+										http.createServer(function (request, response) {
+											response.writeHead(200, { 'Content-Type': 'text/html'});
+											response.end(index);
+											return;
+										}).listen(5000);
+									</code>
+								</li>
+								<li>Suivre <a href="https://devcenter.heroku.com/articles/nodejs">la procéure de configuration de Node.js</a> sur le site d'Heroku.</li>
+							</ol>
+
+							<h3>⡠ Conclusion</h3>
+							Après quelques difficultés que je détaillerai demain, mon site est totalement fonctionnel.
+							Heu en fait il n'est pas encore fonctionnel sur Heroku. Il doit y a un petit problème. Du coup, petit upload sur Google Drive en attendant de trouver une solution.
+					</p>
+
+					<footer>
+						=======
+					</footer>
+				</article>
+
+				<article>
+					<header>
+						<h1>⡣ Mise en ligne de mon site</h1>
+						<time datetime="20130409" pubdate>mardi 9 avril 2013</time>
+					</header>
+
+					<p>
+						Voilà, mon site est en ligne. Il est dépouillé, il n'est pas très joli et y a quelques coquilles mais c'est un début.
+						Et à dire vrai c'est un peu l'idée. Non pas de faire un site inélégant mais de vous le présenter tel qu'il est à chaque étape de son évolution. J'ai aussi l'intention de conserver un historique de toutes les phases qui m'auront mené à ce qu'est devenu mon site.
+						Je n'ai pas d'idée précise sur les artifices que je vais employer, mais à chaque mise en oeuvre d'une nouvelle technique je vous en ferait part dans un article mon journal.
+					</p>
+
+					<footer>
+						=======
+					</footer>
+				</article>
+
+				<article>
+					<header>
+						<h1>⡣ Article premier</h1>
+						<time datetime="20130409" pubdate>lundi 8 avril 2013</time>
+					</header>
+
+					<p>
+						Bonjour et bienvenue sur mon journal.
+
+						Il y a bien longtemps que je souhaitais me lancer dans l'aventure de la fabrication et de l'alimentation d'un site internet. 
+						J'ai toujours eu envie de partager mes découvertes et mes connaissances sur les sujets qui m'intéressent mais à mon grand dam, la procrastination a toujours bien fait son œuvre.
+
+						Mais aujourd'hui, en ce 8 avril 2013, c'est décidé, je me lance.
+
+						Mes motivations premières sont de pouvoir partager avec les autres sur des sujets qui m'intéressent voire me passionnent, et de m'enrichir que ce soit au niveau de mes compétences ou sur le plan personnel.
+
+						Ce journal sera orienté vers les technologies Web mais je ne me restreindrai pas à parler de tout autre sujet.
+
+						Je constate qu'il se fait tard et que je dois mettre mon site en ligne avant minuit si je ne veux pas me faire mentir.
+						Je vais donc rédiger mon premier billet, à savoir la mise en ligne de mon site.
+
+						Yann
+					</p>
+
+					<footer>
+						========
+					</footer>
+				</article>
+			</section>
+		</div>
 	</body>
 </html>
