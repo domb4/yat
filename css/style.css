@@ -12,17 +12,29 @@ body {
 	margin: 0 auto;
 	padding: 2em 4em 2em 4em;
 	max-width: 40em;
-	background-color: #9C9C9C;
+	/*background-color: #9C9C9C;*/
 }
 
 header {
 	padding: 0 0 1.2em 0;
 }
 
+footer {
+	max-width: 40em;
+	text-align: center;
+	background-color: #F1F1F1;
+}
+
 h1 {
 	font-size: 3em;
 	font-weight: normal;
 	padding: 0 0 1em 0;
+}
+
+article {
+	background-color: #F1F1F1;
+	margin: 0 0 1em 0;
+	padding: 2.5em 2em 2.5em 2em;
 }
 
 article > header > h1 {
@@ -34,19 +46,32 @@ article > header > h1 {
 h2 {
 	font-size: 1.5em;
 	font-weight: normal;
-	padding: 0 0 1em 0;
+	padding: 0 0 1em 0.75em;
 }
 
 h3 {
 	font-size: 1.3em;
 	font-weight: normal;
-	padding: 0 0 1em 0;
+	padding: 0 0 1em 1.5em;
 }
 
 p {
-	padding: 0 0 0.3em 0;
+	padding: 0 0 1em 0;
 }
 
 article > p {
 	padding: 0 0 1.7em 0;
+}
+
+article ol {
+	margin: 0 0 1em 1.3em;
+}
+
+article ol > li {
+	margin-bottom: 0.5em;
+}
+
+pre {
+	white-space: pre-line;
+	margin: 0 0 0.5em 1em;
 }
